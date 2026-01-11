@@ -1,0 +1,21 @@
+{
+  "name": "finance-assets-api",
+  "version": "0.0.1",
+  "description": "Finance Assets API Monorepo",
+  "private": true,
+  "license": "UNLICENSED",
+  "scripts": {
+    "dev": "pnpm --filter api dev",
+    "build": "pnpm --filter api build",
+    "start": "pnpm --filter api start",
+    "start:prod": "pnpm --filter api start:prod",
+    "lint": "pnpm --filter api lint",
+    "format": "pnpm --filter api format",
+    "check": "pnpm --filter api check"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}
+
+
