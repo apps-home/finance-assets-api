@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common'
-import { PrismaService } from 'src/infra/prisma/prisma.service'
+import { Inject, Injectable } from '@nestjs/common'
 import { Budget } from '../../domain/budget.entity'
 import { BudgetRepository } from '../../domain/budget.repository'
+import { FinanceAssets } from '@lib/db'
 
 @Injectable()
 export class PrismaBudgetRepository implements BudgetRepository {
-  constructor(private prisma: PrismaService) {}
+  constructor(@Inject('prismaFinanceAssets') private prisma: FinanceAssets) {}
 
   async list(params: any): Promise<Budget[]> {
     throw new Error('Method not implemented.')
