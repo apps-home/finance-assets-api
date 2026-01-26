@@ -11,7 +11,7 @@ import { CreateCategoryDto } from '../domain/dto/create-category.dto'
 import { UpdateCategoryDto } from '../domain/dto/update-category.dto'
 import { CreateCategoryUseCase } from '../domain/use-cases/create-category'
 
-@Controller('category')
+@Controller('categories')
 export class CategoryController {
   constructor(private readonly createCategoryUseCase: CreateCategoryUseCase) {}
 

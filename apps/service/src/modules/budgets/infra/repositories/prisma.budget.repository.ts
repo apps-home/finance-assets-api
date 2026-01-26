@@ -1,14 +1,35 @@
+import { FinanceAssets } from '@lib/db'
 import { Inject, Injectable } from '@nestjs/common'
 import { Budget } from '../../domain/budget.entity'
 import { BudgetRepository } from '../../domain/budget.repository'
-import { FinanceAssets } from '@lib/db'
+import { FindAllBudgetsParams } from '../../domain/use-cases/find-all-budgets'
 
 @Injectable()
 export class PrismaBudgetRepository implements BudgetRepository {
   constructor(@Inject('prismaFinanceAssets') private prisma: FinanceAssets) {}
 
-  async list(params: any): Promise<Budget[]> {
-    throw new Error('Method not implemented.')
+  async list(params: FindAllBudgetsParams): Promise<Budget[]> {
+    const records = await this.prisma.assetRecord.findMany({
+      where: {
+        ...(params.categoryId && { categoryId: params.categoryId }),
+        ...(params.month && { month: params.month }),
+        ...(params.year && { year: params.year })
+      },
+      orderBy: [{ year: 'desc' }, { month: 'desc' }]
+    })
+
+    return records.map((record) =>
+      Budget.create({
+        id: record.id,
+        categoryId: record.categoryId,
+        month: record.month,
+        year: record.year,
+        amount: record.amount.toNumber(),
+        exchangeRate: record.exchangeRate?.toNumber() ?? null,
+        createdAt: record.createdAt,
+        updatedAt: record.updatedAt
+      })
+    )
   }
 
   async save(budget: Budget): Promise<void> {
@@ -39,10 +60,29 @@ export class PrismaBudgetRepository implements BudgetRepository {
   }
 
   async findById(id: string): Promise<Budget | null> {
-    throw new Error('Method not implemented.')
+    const record = await this.prisma.assetRecord.findUnique({
+      where: { id }
+    })
+
+    if (!record) {
+      return null
+    }
+
+    return Budget.create({
+      id: record.id,
+      categoryId: record.categoryId,
+      month: record.month,
+      year: record.year,
+      amount: record.amount.toNumber(),
+      exchangeRate: record.exchangeRate?.toNumber() ?? null,
+      createdAt: record.createdAt,
+      updatedAt: record.updatedAt
+    })
   }
 
   async delete(id: string): Promise<void> {
-    throw new Error('Method not implemented.')
+    await this.prisma.assetRecord.delete({
+      where: { id }
+    })
   }
 }
