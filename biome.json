@@ -5,7 +5,8 @@
       "apps/**/src/**/*.ts",
       "**/src/**/*.ts",
       "**/src/**/*.js",
-      "**/src/**/*.json"
+      "**/src/**/*.json",
+      "**/prisma/**/*.ts"
     ]
   },
   "formatter": {
@@ -34,7 +35,7 @@
         "useRegexLiterals": "error"
       },
       "correctness": {
-        "noUnusedImports": "warn",
+        "noUnusedImports": { "fix": "safe", "level": "warn" },
         "noUnusedFunctionParameters": "warn",
         "noChildrenProp": "error",
         "noConstAssign": "error",

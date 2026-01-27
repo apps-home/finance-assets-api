@@ -1,7 +1,10 @@
-import { Global, Module } from '@nestjs/common'
 import { prismaFinanceAssets } from '@lib/db'
+import { Global, Module } from '@nestjs/common'
 
-const FinanceAssetsProvider = { provide: 'prismaFinanceAssets', useValue: prismaFinanceAssets }
+const FinanceAssetsProvider = {
+  provide: 'prismaFinanceAssets',
+  useValue: prismaFinanceAssets
+}
 
 @Global()
 @Module({

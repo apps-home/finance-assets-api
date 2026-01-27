@@ -11,6 +11,9 @@
     "lint": "pnpm --filter api lint",
     "format": "pnpm --filter api format",
     "check": "pnpm --filter api check"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.3.10"
   }
 }
 

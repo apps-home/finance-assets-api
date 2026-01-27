@@ -20,4 +20,3 @@ import { PrismaBudgetRepository } from './infra/repositories/prisma.budget.repos
   ]
 })
 export class BudgetModule {}
-

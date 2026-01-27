@@ -33,7 +33,6 @@
     "socket.io": "^4.8.3"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.3.10",
     "@nestjs/cli": "^11.0.16",
     "@nestjs/schematics": "^11.0.9",
     "@swc/cli": "^0.7.9",

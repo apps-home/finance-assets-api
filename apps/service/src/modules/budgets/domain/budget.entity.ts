@@ -33,10 +33,6 @@ export class Budget implements BudgetProps {
     })
   }
 
-  get props(): BudgetProps {
-    return this._props
-  }
-
   get id(): string {
     return this._props.id
   }

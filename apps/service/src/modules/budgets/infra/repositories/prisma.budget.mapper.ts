@@ -1,25 +1,21 @@
-import { Budget, BudgetProps } from './budget.entity'
+import { Prisma } from '@lib/db'
+import { Budget } from '../../domain/budget.entity'
 
-export interface BudgetDomainDTO {
-  categoryId: string
-  month: number
-  year: number
-  amount: number
-  exchangeRate?: number | null
-}
-
-export class BudgetMapper {
-  static toDomain(raw: BudgetDomainDTO): Budget {
+export class PrismaBudgetMapper {
+  static toDomain(raw: Prisma.AssetRecordGetPayload<{}>): Budget {
     return Budget.create({
+      id: raw.id,
       categoryId: raw.categoryId,
       month: raw.month,
       year: raw.year,
-      amount: raw.amount,
-      exchangeRate: raw.exchangeRate
+      amount: Number(raw.amount),
+      exchangeRate: Number(raw.exchangeRate) || null,
+      createdAt: raw.createdAt,
+      updatedAt: raw.updatedAt
     })
   }
 
-  static toHTTP(budget: Budget): BudgetProps {
+  static toPrisma(budget: Budget) {
     return {
       id: budget.id,
       categoryId: budget.categoryId,

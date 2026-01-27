@@ -1,4 +1,4 @@
-export class CreateBudgetDto {
+export class CreateBudgetPayload {
   categoryId: string
   month: number
   year: number

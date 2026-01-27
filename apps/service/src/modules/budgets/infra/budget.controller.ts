@@ -1,25 +1,27 @@
 import {
-    Body,
-    Controller,
-    Delete,
-    Get,
-    HttpException,
-    HttpStatus,
-    Param,
-    Patch,
-    Post,
-    Query
+  BadRequestException,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpException,
+  HttpStatus,
+  InternalServerErrorException,
+  Param,
+  Patch,
+  Post,
+  Query
 } from '@nestjs/common'
-import { CreateBudgetDto } from '../domain/dto/create-budget.dto'
-import { UpdateBudgetDto } from '../domain/dto/update-budget.dto'
-import { CreateBudgetUseCase } from '../domain/use-cases/create-budget'
-import { DeleteBudgetUseCase } from '../domain/use-cases/delete-budget'
+import { CreateBudgetUseCase } from '../application/use-cases/create-budget'
+import { DeleteBudgetUseCase } from '../application/use-cases/delete-budget'
+import { FindAllBudgetsUseCase } from '../application/use-cases/find-all-budgets'
+import { FindBudgetByIdUseCase } from '../application/use-cases/find-budget-by-id'
+import { UpdateBudgetUseCase } from '../application/use-cases/update-budget'
 import {
-    FindAllBudgetsParams,
-    FindAllBudgetsUseCase
-} from '../domain/use-cases/find-all-budgets'
-import { FindBudgetByIdUseCase } from '../domain/use-cases/find-budget-by-id'
-import { UpdateBudgetUseCase } from '../domain/use-cases/update-budget'
+  CreateBudgetDTO,
+  FindAllBudgetsParamsDTO,
+  UpdateBudgetDTO
+} from './budget.dto'
 
 @Controller('budgets')
 export class BudgetController {
@@ -32,7 +34,7 @@ export class BudgetController {
   ) {}
 
   @Post()
-  async create(@Body() data: CreateBudgetDto) {
+  async create(@Body() data: CreateBudgetDTO) {
     const result = await this.createBudgetUseCase.execute(data)
 
     if (result.isLeft()) {
@@ -43,14 +45,20 @@ export class BudgetController {
   }
 
   @Get()
-  async findAll(@Query() params: FindAllBudgetsParams) {
+  async findAll(@Query() params: FindAllBudgetsParamsDTO) {
     const result = await this.findAllBudgetsUseCase.execute(params)
 
     if (result.isLeft()) {
-      throw new HttpException(result.value.message, HttpStatus.BAD_REQUEST)
-    }
+      const error = result.value
 
-    return result.value.map((budget) => budget.props)
+      switch (error.constructor) {
+        case Error:
+          throw new BadRequestException(error.message)
+        default:
+          throw new InternalServerErrorException('Unexpected error')
+      }
+    }
+    return result.value
   }
 
   @Get(':id')
@@ -61,11 +69,11 @@ export class BudgetController {
       throw new HttpException(result.value.message, HttpStatus.NOT_FOUND)
     }
 
-    return result.value.props
+    return result.value
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() data: UpdateBudgetDto) {
+  async update(@Param('id') id: string, @Body() data: UpdateBudgetDTO) {
     const result = await this.updateBudgetUseCase.execute(id, data)
 
     if (result.isLeft()) {
@@ -86,4 +94,3 @@ export class BudgetController {
     return { message: 'Budget deleted successfully' }
   }
 }
-

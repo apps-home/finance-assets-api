@@ -1,8 +1,8 @@
 import { FinanceAssets } from '@lib/db'
 import { Inject, Injectable } from '@nestjs/common'
+import { FindAllBudgetsParams } from '../../application/use-cases/find-all-budgets'
 import { Budget } from '../../domain/budget.entity'
 import { BudgetRepository } from '../../domain/budget.repository'
-import { FindAllBudgetsParams } from '../../domain/use-cases/find-all-budgets'
 
 @Injectable()
 export class PrismaBudgetRepository implements BudgetRepository {
@@ -18,7 +18,7 @@ export class PrismaBudgetRepository implements BudgetRepository {
       orderBy: [{ year: 'desc' }, { month: 'desc' }]
     })
 
-    return records.map((record) =>
+    return records.map(record =>
       Budget.create({
         id: record.id,
         categoryId: record.categoryId,

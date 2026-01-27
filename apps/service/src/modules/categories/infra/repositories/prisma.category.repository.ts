@@ -1,7 +1,7 @@
+import { FinanceAssets } from '@lib/db'
 import { Inject, Injectable } from '@nestjs/common'
 import { Category } from '../../domain/category.entity'
 import { CategoryRepository } from '../../domain/category.repository'
-import { FinanceAssets } from '@lib/db'
 
 @Injectable()
 export class PrismaCategoryRepository implements CategoryRepository {
