@@ -8,7 +8,8 @@ import {
   Param,
   Patch,
   Post,
-  Query
+  Query,
+  Req
 } from '@nestjs/common'
 import { CreateCategoryUseCase } from '../application/use-cases/create-category'
 import { DeleteCategoryUseCase } from '../application/use-cases/delete-category'
@@ -28,8 +29,11 @@ export class CategoryController {
   ) {}
 
   @Post()
-  async create(@Body() data: CreateCategoryDTO) {
-    const result = await this.createCategoryUseCase.execute(data)
+  async create(@Body() data: CreateCategoryDTO, @Req() request: any) {
+    const result = await this.createCategoryUseCase.execute({
+      ...data,
+      userId: request.headers['user-id']
+    })
 
     if (result.isLeft()) {
       const error = result.value

@@ -5,18 +5,23 @@ import { IsNotEmpty, IsString } from 'class-validator'
 export class CreateCategoryDTO {
   @IsString()
   @IsNotEmpty()
-  @Transform(({ value }) => value?.trim())
+  @Transform(({ value }) => {
+    if (typeof value === 'string') {
+      return value.trim()
+    }
+    return undefined
+  })
   name: string
 
   @IsString()
   @IsNotEmpty()
-  @Transform(({ value }) => value?.trim())
+  @Transform(({ value }) => {
+    if (typeof value === 'string') {
+      return value.trim()
+    }
+    return undefined
+  })
   currency: string
-
-  @IsString()
-  @IsNotEmpty()
-  @Transform(({ value }) => value?.trim())
-  userId: string
 }
 
 export class UpdateCategoryDTO extends PartialType(CreateCategoryDTO) {}

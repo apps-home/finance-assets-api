@@ -4,7 +4,9 @@ import { CategoryProps } from '../../domain/category.entity'
 import { CategoryMapper } from '../../domain/category.mapper'
 import { CategoryRepository } from '../../domain/category.repository'
 
-export interface FindAllCategoriesParams {}
+export interface FindAllCategoriesParams {
+  userId?: string
+}
 
 type FindAllCategoriesResponse = Either<Error, CategoryProps[]>
 

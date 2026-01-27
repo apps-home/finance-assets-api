@@ -39,13 +39,21 @@ export class UpdateBudgetDTO extends PartialType(CreateBudgetDTO) {}
 export class FindAllBudgetsParamsDTO {
   @Expose()
   @IsOptional()
-  @Transform(({ value }) => value?.toString().trim())
+  @Transform(({ value }) => {
+    if (typeof value === 'string') {
+      return value.trim()
+    }
+
+    return undefined
+  })
   @IsString({ message: 'categoryId must be a string' })
   categoryId?: string
 
   @Expose()
   @IsOptional()
-  @Transform(({ value }) => value?.toNumber())
+  @Transform(({ value }) =>
+    value !== undefined && value !== '' ? Number(value) : undefined
+  )
   @IsInt({ message: 'month must be an integer' })
   @Min(1)
   @Max(12)
@@ -53,7 +61,9 @@ export class FindAllBudgetsParamsDTO {
 
   @Expose()
   @IsOptional()
-  @Transform(({ value }) => value?.toNumber())
+  @Transform(({ value }) =>
+    value !== undefined && value !== '' ? Number(value) : undefined
+  )
   @IsInt({ message: 'year must be an integer' })
   @Min(2024)
   year?: number
