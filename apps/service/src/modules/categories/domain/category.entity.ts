@@ -29,8 +29,12 @@ export class Category implements CategoryProps {
     })
   }
 
-  get props(): CategoryProps {
-    return this._props
+  update(props: Partial<Omit<CategoryProps, 'id' | 'userId' | 'createdAt'>>) {
+    this._props = {
+      ...this._props,
+      ...props,
+      updatedAt: new Date()
+    }
   }
 
   get id(): string {

@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { Either, right } from 'src/core/utils/Either'
-import { BudgetMapper } from '../budget.mapper'
-import { BudgetRepository } from '../budget.repository'
-import { CreateBudgetPayload } from '../dto/create-budget.dto'
+import { BudgetMapper } from '../../domain/budget.mapper'
+import { BudgetRepository } from '../../domain/budget.repository'
+import { CreateBudgetPayload } from '../../domain/dto/create-budget.dto'
 
 type CreateBudgetResponse = Either<Error, void>
 

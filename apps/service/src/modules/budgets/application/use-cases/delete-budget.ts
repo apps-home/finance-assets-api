@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common'
 import { Either, left, right } from 'src/core/utils/Either'
-import { BudgetRepository } from '../budget.repository'
+import { BudgetRepository } from '../../domain/budget.repository'
 
 type DeleteBudgetResponse = Either<Error, void>
 

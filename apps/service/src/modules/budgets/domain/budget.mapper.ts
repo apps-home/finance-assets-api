@@ -1,15 +1,8 @@
 import { Budget, BudgetProps } from './budget.entity'
-
-export interface BudgetDomainDTO {
-  categoryId: string
-  month: number
-  year: number
-  amount: number
-  exchangeRate?: number | null
-}
+import { CreateBudgetPayload } from './dto/create-budget.dto'
 
 export class BudgetMapper {
-  static toDomain(raw: BudgetDomainDTO): Budget {
+  static toDomain(raw: CreateBudgetPayload): Budget {
     return Budget.create({
       categoryId: raw.categoryId,
       month: raw.month,

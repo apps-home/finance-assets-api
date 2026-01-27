@@ -4,8 +4,6 @@ import {
   Controller,
   Delete,
   Get,
-  HttpException,
-  HttpStatus,
   InternalServerErrorException,
   Param,
   Patch,
@@ -38,7 +36,14 @@ export class BudgetController {
     const result = await this.createBudgetUseCase.execute(data)
 
     if (result.isLeft()) {
-      throw new HttpException(result.value.message, HttpStatus.BAD_REQUEST)
+      const error = result.value
+
+      switch (error.constructor) {
+        case Error:
+          throw new BadRequestException(error.message)
+        default:
+          throw new InternalServerErrorException('Unexpected error')
+      }
     }
 
     return { message: 'Budget created successfully' }
@@ -66,7 +71,14 @@ export class BudgetController {
     const result = await this.findBudgetByIdUseCase.execute(id)
 
     if (result.isLeft()) {
-      throw new HttpException(result.value.message, HttpStatus.NOT_FOUND)
+      const error = result.value
+
+      switch (error.constructor) {
+        case Error:
+          throw new BadRequestException(error.message)
+        default:
+          throw new InternalServerErrorException('Unexpected error')
+      }
     }
 
     return result.value
@@ -77,7 +89,14 @@ export class BudgetController {
     const result = await this.updateBudgetUseCase.execute(id, data)
 
     if (result.isLeft()) {
-      throw new HttpException(result.value.message, HttpStatus.NOT_FOUND)
+      const error = result.value
+
+      switch (error.constructor) {
+        case Error:
+          throw new BadRequestException(error.message)
+        default:
+          throw new InternalServerErrorException('Unexpected error')
+      }
     }
 
     return { message: 'Budget updated successfully' }
@@ -88,7 +107,14 @@ export class BudgetController {
     const result = await this.deleteBudgetUseCase.execute(id)
 
     if (result.isLeft()) {
-      throw new HttpException(result.value.message, HttpStatus.NOT_FOUND)
+      const error = result.value
+
+      switch (error.constructor) {
+        case Error:
+          throw new BadRequestException(error.message)
+        default:
+          throw new InternalServerErrorException('Unexpected error')
+      }
     }
 
     return { message: 'Budget deleted successfully' }

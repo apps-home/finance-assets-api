@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common'
 import { Either, left, right } from 'src/core/utils/Either'
-import { BudgetProps } from '../budget.entity'
-import { BudgetMapper } from '../budget.mapper'
-import { BudgetRepository } from '../budget.repository'
+import { BudgetProps } from '../../domain/budget.entity'
+import { BudgetMapper } from '../../domain/budget.mapper'
+import { BudgetRepository } from '../../domain/budget.repository'
 
 type FindBudgetByIdResponse = Either<Error, BudgetProps>
 

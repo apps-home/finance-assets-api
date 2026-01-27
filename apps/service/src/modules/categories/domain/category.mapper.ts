@@ -1,4 +1,4 @@
-import { Category } from './category.entity'
+import { Category, CategoryProps } from './category.entity'
 
 export interface CategoryDomainDTO {
   name: string
@@ -13,5 +13,16 @@ export class CategoryMapper {
       currency: raw.currency,
       userId: raw.userId
     })
+  }
+
+  static toHTTP(category: Category): CategoryProps {
+    return {
+      id: category.id,
+      name: category.name,
+      currency: category.currency,
+      userId: category.userId,
+      createdAt: category.createdAt,
+      updatedAt: category.updatedAt
+    }
   }
 }

@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common'
 import { Either, left, right } from 'src/core/utils/Either'
-import { Budget } from '../budget.entity'
-import { BudgetRepository } from '../budget.repository'
-import { UpdateBudgetPayload } from '../dto/update-budget.dto'
+import { BudgetRepository } from '../../domain/budget.repository'
+import { UpdateBudgetPayload } from '../../domain/dto/update-budget.dto'
 
 type UpdateBudgetResponse = Either<Error, void>
 
@@ -20,18 +19,13 @@ export class UpdateBudgetUseCase {
       return left(new Error('Budget not found'))
     }
 
-    const updatedBudget = Budget.create({
-      id: existingBudget.id,
-      categoryId: data.categoryId ?? existingBudget.categoryId,
-      month: data.month ?? existingBudget.month,
-      year: data.year ?? existingBudget.year,
-      amount: data.amount ?? existingBudget.amount,
-      exchangeRate: data.exchangeRate ?? existingBudget.exchangeRate,
-      createdAt: existingBudget.createdAt,
-      updatedAt: new Date()
-    })
+    try {
+      existingBudget.update(data)
+    } catch (error: any) {
+      return left(new Error('Failed to update budget: ' + error.message))
+    }
 
-    await this.budgetRepository.save(updatedBudget)
+    await this.budgetRepository.save(existingBudget)
 
     return right(void 0)
   }

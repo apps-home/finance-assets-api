@@ -33,6 +33,16 @@ export class Budget implements BudgetProps {
     })
   }
 
+  update(
+    props: Partial<Omit<BudgetProps, 'id' | 'createdAt' | 'updatedAt'>>
+  ): void {
+    this._props = {
+      ...this._props,
+      ...props,
+      updatedAt: new Date()
+    }
+  }
+
   get id(): string {
     return this._props.id
   }

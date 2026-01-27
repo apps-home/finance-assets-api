@@ -3,6 +3,7 @@ import { Inject, Injectable } from '@nestjs/common'
 import { FindAllBudgetsParams } from '../../application/use-cases/find-all-budgets'
 import { Budget } from '../../domain/budget.entity'
 import { BudgetRepository } from '../../domain/budget.repository'
+import { PrismaBudgetMapper } from './prisma.budget.mapper'
 
 @Injectable()
 export class PrismaBudgetRepository implements BudgetRepository {
@@ -18,18 +19,7 @@ export class PrismaBudgetRepository implements BudgetRepository {
       orderBy: [{ year: 'desc' }, { month: 'desc' }]
     })
 
-    return records.map(record =>
-      Budget.create({
-        id: record.id,
-        categoryId: record.categoryId,
-        month: record.month,
-        year: record.year,
-        amount: record.amount.toNumber(),
-        exchangeRate: record.exchangeRate?.toNumber() ?? null,
-        createdAt: record.createdAt,
-        updatedAt: record.updatedAt
-      })
-    )
+    return records.map(PrismaBudgetMapper.toDomain)
   }
 
   async save(budget: Budget): Promise<void> {
@@ -68,16 +58,7 @@ export class PrismaBudgetRepository implements BudgetRepository {
       return null
     }
 
-    return Budget.create({
-      id: record.id,
-      categoryId: record.categoryId,
-      month: record.month,
-      year: record.year,
-      amount: record.amount.toNumber(),
-      exchangeRate: record.exchangeRate?.toNumber() ?? null,
-      createdAt: record.createdAt,
-      updatedAt: record.updatedAt
-    })
+    return PrismaBudgetMapper.toDomain(record)
   }
 
   async delete(id: string): Promise<void> {
