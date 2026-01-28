@@ -29,7 +29,7 @@ export class CreateBudgetDTO {
   @Expose()
   @IsOptional()
   @Transform(({ value }) => Number(value))
-  @IsInt({ message: 'exchangeRate must be an integer' })
+  @IsInt({ message: 'exchangeRate must be a number' })
   @Min(0)
   exchangeRate?: number | null
 }
